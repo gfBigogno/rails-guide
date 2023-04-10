@@ -1,0 +1,25 @@
+<% unless comment.archived? %>
+
+<div class="card mt-2">
+  <p class="p-2">
+    <strong>Commenter:</strong>
+    <%= comment.commenter %>
+  </p>
+
+  <div class="card-body border m-2">
+    <p>
+      <strong>Comment:</strong>
+      <%= comment.body %>
+    </p>
+  </div>
+
+  <div class="m-2">
+    <p>
+      <%= link_to "Destroy Comment", [comment.article, comment], data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  }, class: "btn btn-danger btn-sm" %>
+    </p>
+  </div>
+</div>
+<% end %>
