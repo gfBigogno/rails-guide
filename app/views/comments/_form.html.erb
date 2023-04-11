@@ -1,4 +1,6 @@
-<%= form_with model: [ @article, @article.comments.build ] do |form| %>
+<%
+=begin%>
+ <%= form_with model: [ @article, @article.comments.build ] do |form| %>
   <p>
     <%= form.label :commenter, class: "form-label" %><br>
     <%= form.text_field :commenter, class: "form-control" %>
@@ -15,4 +17,15 @@
   <p>
     <%= form.submit "Comentar", class: "btn btn-success btn-sm" %>
   </p>
+<% end %> 
+<%
+=end%>
+
+<%= simple_form_for [ @article, @article.comments.build ] do |f| %>
+  <%= f.input :commenter, label_html: { class: 'form-label' }, input_html: { class: 'form-control' }%>
+  <%= f.input :body, label_html: { class: 'form-label' }, input_html: { class: 'form-control' }%>
+  <div class="mb-3 row col-md-3">
+    <%= f.input :status, as: :select, selected: 'public', collection: ['public', 'private', 'archived'], label_html: { class: 'form-label' }, input_html: { class: 'form-select' } %>
+  </div>
+  <%= f.button :submit, class: 'btn btn-success btn-sm mb-4' %>
 <% end %>

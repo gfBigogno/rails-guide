@@ -13,13 +13,15 @@
     </p>
   </div>
 
-  <div class="m-2">
-    <p>
-      <%= link_to "Destroy Comment", [comment.article, comment], data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  }, class: "btn btn-danger btn-sm" %>
-    </p>
-  </div>
+  <% if user_signed_in? && current_user == @article.user %>
+    <div class="m-2">
+      <p>
+        <%= link_to "Destroy Comment", [comment.article, comment], data: {
+                      turbo_method: :delete,
+                      turbo_confirm: "Are you sure?"
+                    }, class: "btn btn-danger btn-sm" %>
+      </p>
+    </div>
+  <% end %>
 </div>
 <% end %>
