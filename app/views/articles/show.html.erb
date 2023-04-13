@@ -2,7 +2,8 @@
 
 <p> <%= @article.body %> </p>
 
-<% if user_signed_in? && current_user == @article.user %>
+
+<% if can?(:update, @article) && can?(:destroy, @article)  %>
   <div class="row mb-5">
     <div class="col">
       <%= link_to "Edit", edit_article_path(@article), class: "btn btn-warning btn-sm" %>

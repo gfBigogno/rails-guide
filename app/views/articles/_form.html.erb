@@ -1,4 +1,6 @@
-
+<%
+=begin%>
+ 
 <%= simple_form_for article do |f| %>
   <div class="mb-3">
     <%= f.input :title, label_html: { class: 'form-label' }, input_html: { class: 'form-control' } %>
@@ -20,37 +22,59 @@
 
   <%= f.button :submit, class: 'btn btn-success btn-sm' %>
 
-<% end %>
-
-
+<% end %> 
 <%
-=begin%>
+=end%>
+
+
+
  
-<%= form_with model: article do |form| %>
+<%= form_with model: @article, data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' } do |f| %>
   <div class="mb-3">
-    <%= form.label :title, class: "form-label" %><br>
-    <%= form.text_field :title, class: "form-control" %>
+    <%= f.label :title, class: "form-label" %><br>
+    <%= f.text_field :title, class: "form-control" %>
     <% article.errors.full_messages_for(:title).each do |message| %>
       <div><%= message %></div>
     <% end %>
   </div>
 
   <div>
-    <%= form.label :body, class: "form-label" %><br>
-    <%= form.text_area :body, class: "form-control" %><br>
+    <%= f.label :body, class: "form-label" %><br>
+    <%= f.text_area :body, class: "form-control" %><br>
     <% article.errors.full_messages_for(:body).each do |message| %>
       <div><%= message %></div>
     <% end %>
   </div>
 
   <div class="mb-4">
-    <%= form.label :status, class: "form-label" %><br>
-    <%= form.select :status, ['public', 'private', 'archived'], selected: 'public', class: "form-select" %>
+    <%= f.label :status, class: "form-label" %><br>
+    <%= f.select :status, ['public', 'private', 'archived'], selected: 'public', class: "form-select" %>
   </div>
 
-  <div class="mb-3">
-    <%= form.submit "Update Article", class: "btn btn-success btn-sm" %>
+
+  <template data-nested-form-target="template">
+    <%= f.fields_for :comments, Comment.new, child_index: 'NEW_RECORD' do |comment_fields| %>
+      <%= render "comments/form2", f: comment_fields %>
+    <% end %>
+  </template>
+
+  <%= f.fields_for :comments do |comment_fields| %>
+    <%= render "comments/form2", f: comment_fields %>
+  <% end %>
+
+  <!-- Inserted elements will be injected before that target. -->
+  <div data-nested-form-target="target"></div>
+
+  <div class="mt-3 row">
+      <div class="col-md-2">
+        <button type="button" class="btn btn-info btn-sm" data-action="nested-form#add">Add comment</button>
+      </div>
+      <div class="col-md-1">
+        <%= f.submit "Save comments", class: "btn btn-success btn-sm" %>
+      </div>
   </div>
+
 <% end %> 
-<%
-=end%>
+
+
+
